@@ -1,31 +1,14 @@
 const http = require('http');
-
-const senderList = [
-        {
-            senderId: 1,
-            parcelId: 123,
-            pickUp: 'street A',
-            dropOff: 'street B'
-        },
-        {
-            senderId: 2,
-            parcelId: 234,
-            pickUp: 'street C',
-            dropOff: 'street D'
-        },
-        {
-            senderId: 3,
-            parcelId: 345,
-            pickUp: 'street E',
-            dropOff: 'street F'
-        }
-    ]
+const { getSender, getParcels, createParcel } = require('./controllers/parcelController');
 
 const server = http.createServer((req, res) => {
     
     if (req.url === '/sender' && req.method === 'GET') {
-        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "*"})
-        res.end(JSON.stringify({ data: senderList }))
+        getSender(req, res);
+    }else if (req.url === '/parcel' && req.method === 'GET') {
+        getParcels(req, res);
+    } else if(req.url === '/parcel' && req.method === 'POST') {
+        createParcel(req, res); 
     } else {
         res.writeHead(404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "*" })
         res.end(JSON.stringify({ message: 'Nothing found here' }))

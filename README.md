@@ -1,21 +1,23 @@
-###### parcel
+```javascript
+# parcel
 Online parcel pick-up and drop-off service.
 
 
-###### Routes
+#Routes
 Sender - /sender
 Biker - /biker
 
-###### Install dependencies
+ Install dependencies
 npm install
 yarn install
 
-###### SERVER -- node.js
-###### /server/
+# SERVER -- node.js
+# /server/
 npm run dev
 yarn run dev
 
-###### FRONTEND -- react.js
-###### /view/
+# FRONTEND -- react.js
+# /view/
 npm start
 yarn start
+```

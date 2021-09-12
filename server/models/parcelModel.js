@@ -1,10 +1,21 @@
-//const store = require('./data.json');
 const senderList = [
     { senderId: "01" },
     { senderId: "02" },
     { senderId: "03" },
     { senderId: "04" },
     { senderId: "05" }
+]
+const bikerList = [
+    { bikerId: "01" },
+    { bikerId: "02" },
+    { bikerId: "03" },
+    { bikerId: "04" },
+    { bikerId: "05" },
+    { bikerId: "06" },
+    { bikerId: "07" },
+    { bikerId: "08" },
+    { bikerId: "09" },
+    { bikerId: "10" }
 ]
 
 var store = [
@@ -14,19 +25,19 @@ var store = [
         name: "Parcel 1",
         pickUp: 'street A',
         dropOff: 'street B',
-        status: 'Not Picked'
+        status: 'Not Picked',
     },
     {
         senderId: "01",
-        parcelId: "231",
+        parcelId: "124",
         name: "Parcel 2",
         pickUp: 'street A',
         dropOff: 'street B',
-        status: 'Not Picked'
+        status: 'Not Picked',
     },
     {
         senderId: "02",
-        parcelId: "123",
+        parcelId: "125",
         name: "Parcel 2",
         pickUp: 'street A',
         dropOff: 'street B',
@@ -34,7 +45,7 @@ var store = [
     },
     {
         senderId: "03",
-        parcelId: "465",
+        parcelId: "126",
         name: "Parcel 3",
         pickUp: 'street A',
         dropOff: 'street B',
@@ -49,7 +60,7 @@ function sender(){
     })
 }
 
-// parcel read and create
+// parcel read, create and update
 function read(){
     return new Promise((resolve, reject) => {
         resolve(JSON.stringify(store));
@@ -58,10 +69,28 @@ function read(){
 
 function create(parcel){
     return new Promise((resolve, reject) => {
-        //let parsedData = JSON.parse(store);
         store.push(JSON.parse(parcel));
-        //localStorage.setItem('parcel_data', JSON.stringify(parsedData));
         resolve(store);
+    })
+}
+
+function update(parcel){
+    let obj = JSON.parse(parcel);
+    return new Promise((resolve, reject) => {
+        store.map((item, idx) => {
+            if(item.parcelId === obj.parcelId){
+                store[idx] = {...item, bikerId: obj.bikerId, status: obj.status, dateTime: obj.dateTime};    
+            }
+        })
+
+        resolve(store);
+    })
+}
+
+// get biker
+function biker(){
+    return new Promise((resolve, reject) => {
+        resolve(JSON.stringify(bikerList));
     })
 }
 
@@ -69,5 +98,7 @@ function create(parcel){
 module.exports = {
     sender,
     read,
-    create
+    create,
+    update,
+    biker
 }

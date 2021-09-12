@@ -34,7 +34,6 @@ const Sender = () => {
         let status = "Not Picked";
         ParcelService.createParcel({senderId, parcelId, ...formData, status})
         .then((data) => 
-            console.log(data),
             getParcelList(senderId)
         )
         .catch(err => console.log(err))
@@ -42,11 +41,16 @@ const Sender = () => {
 
     useEffect(() => {
         getSenderList();
-
+        // eslint-disable-next-line
     }, [])
 
     return (
         <div className="container">
+            <div className="row mb-3">
+                <div className="col-md-12 text-end">
+                    <button className="btn btn-sm btn-outline-secondary" onClick={() => getSenderList()}>Refresh</button>
+                </div>
+            </div>
             <div className="row align-items-center border-bottom pb-3 mb-3">
                 <div className="col-md-8">
                     <h6 className="fw-bold text-primary mb-0">Dashboard</h6>
@@ -98,17 +102,17 @@ const CreateParcel = (props) => {
 
     return (<>
         <div className="row py-2 mb-3 bg-gray-shade">
-            <div className="col-md-3">
+            <div className="col-md-3 mb-2 mb-md-0">
                 <div className="input-group">
                     <input className="form-control" type="text" name="name" placeholder="Parcel Name" value={formData.name} onChange={e => handleOnChange(e)} />
                 </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 mb-2 mb-md-0">
                 <div className="input-group">
                     <input className="form-control" type="text" name="pickUp" placeholder="Pick-up" value={formData.pickUp} onChange={e => handleOnChange(e)}/>
                 </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3 mb-2 mb-md-0">
                 <div className="input-group">
                     <input className="form-control" type="text" name="dropOff" placeholder="Drop-off" value={formData.dropOff} onChange={e => handleOnChange(e)}/>
                 </div>
@@ -121,33 +125,37 @@ const CreateParcel = (props) => {
 }
 
 const ParcelList = (props) => {
+    const getDateFormat = (dt) => {
+        return new Date(dt).toLocaleString()
+    }
 
-    return (
-        <table className="w-100">
-            <thead className="bg-gray-shade text-primary">
-                <tr>
-                    <td width="50" align="center">#</td>
-                    <td>Parcel Name</td>
-                    <td>Pick-up address</td>
-                    <td>Drop-off address</td>
-                    <td>Status</td>
-                </tr>
-            </thead>    
-            <tbody>
-            {
-                props.list.map(item => (
-                    <tr key={item.parcelId} className="border-bottom fs-6">
-                        <td width="50" align="center" className="text-primary">{item.parcelId}</td>
-                        <td>{item.name}</td>
-                        <td>{item.pickUp}</td>
-                        <td>{item.dropOff}</td>
-                        <td className="text-danger">{item.status}</td>
-                    </tr>
-                ))
-            }
-            </tbody>
-        </table>
-    )
+    return (<>
+        <div className="row bg-gray-shade text-primary py-2 d-none d-md-flex">
+            <div className="col-md-1 text-center">#</div>
+            <div className="col-md-2">Parcel Name</div>
+            <div className="col-md-3">Pick-up address</div>
+            <div className="col-md-3">Drop-off address</div>
+            <div className="col-md-3 text-center">Status</div>
+        </div>
+        {
+            props.list.map(item => (
+                <div key={item.parcelId} className="row align-items-center border-bottom fs-6">
+                    <div className="col-md-1 text-md-center text-primary">{item.parcelId}</div>
+                    <div className="col-md-2">{item.name}</div>
+                    <div className="col-md-3">{item.pickUp}</div>
+                    <div className="col-md-3">{item.dropOff}</div>
+                    <div className="col-6 col-md-3 fw-bold small text-md-center">
+                        <span className={
+                        item.status === `Not Picked` ? `text-success` :
+                            item.status === `Picked` ? `text-info` :
+                                item.status === `On The Way` ? `text-warning` : `text-danger`
+                        }>{item.status}</span><br/>
+                        <small className="text-muted"> {(`dateTime` in item) && `at - ` + getDateFormat(item.dateTime)}</small>
+                    </div>
+                </div>
+            ))
+        }
+    </>)
 }
 
 export default Sender;

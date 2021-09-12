@@ -1,7 +1,8 @@
 const Parcel = require('../models/parcelModel');
 const header = {
     'Content-Type': 'application/json', 
-    'Access-Control-Allow-Origin': "*"
+    'Access-Control-Allow-Origin': "http://localhost:3000",
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT'
 };
 
 async function getSender(req, res){
@@ -32,7 +33,6 @@ function getPostData(req) {
     })
 }
 
-
 async function getParcels(req, res){
     try{
         const parcel = await Parcel.read();
@@ -46,12 +46,33 @@ async function getParcels(req, res){
 
 async function createParcel(req, res){
     const body = await getPostData(req)
-    console.log(body)
     try{
         const parcel = await Parcel.create(body);
 
-        res.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "*"})
+        res.writeHead(200, header)
         res.end(JSON.stringify(parcel))
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function updateParcel(req, res){
+    const body = await getPostData(req)
+    try{
+        const parcel = await Parcel.update(body);
+
+        res.writeHead(200, header)
+        res.end(JSON.stringify(parcel))
+    }catch(err){
+        console.log(err);
+    }
+}
+
+async function getBiker(req, res){
+    try{
+        const biker = await Parcel.biker();
+        res.writeHead(200, header)
+        res.end(JSON.stringify(biker))
     }catch(err){
         console.log(err);
     }
@@ -60,5 +81,7 @@ async function createParcel(req, res){
 module.exports = {
     getSender,
     getParcels,
-    createParcel
+    createParcel,
+    updateParcel,
+    getBiker
 }

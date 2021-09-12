@@ -1,5 +1,5 @@
 const http = require('http');
-const { getSender, getParcels, createParcel } = require('./controllers/parcelController');
+const { getSender, getParcels, createParcel, updateParcel, getBiker } = require('./controllers/parcelController');
 
 const server = http.createServer((req, res) => {
     
@@ -9,7 +9,12 @@ const server = http.createServer((req, res) => {
         getParcels(req, res);
     } else if(req.url === '/parcel' && req.method === 'POST') {
         createParcel(req, res); 
+    } else if(req.url === '/update' && req.method === 'POST') {
+        updateParcel(req, res); 
+    }else if (req.url === '/biker' && req.method === 'GET') {
+        getBiker(req, res);
     } else {
+        
         res.writeHead(404, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "*" })
         res.end(JSON.stringify({ message: 'Nothing found here' }))
     }
